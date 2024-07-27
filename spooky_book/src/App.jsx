@@ -4,6 +4,8 @@ import Error from "./ui/Error.jsx";
 import AppLayout from "./ui/AppLayout.jsx";
 import Audiobook from "./Features/Audiobook/Audiobook.jsx";
 import Gallery from "./Features/Gallery/Gallery.jsx";
+import Chapter from "./ui/Chapter.jsx";
+import Scene from "./Features/3D/Scene.jsx";
 
 const router = createBrowserRouter([
   {
@@ -12,8 +14,8 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       {
-        path: "/audiobook/:audioId",
-        element: <Audiobook />,
+        path: "/chapter/:chapterId",
+        element: <Chapter />,
         errorElement: <Error />,
       },
       {
@@ -21,6 +23,12 @@ const router = createBrowserRouter([
         element: <Gallery />,
         errorElement: <Error />,
       },
+      {
+        path: "/audiobook",
+        element: <Audiobook />,
+        errorElement: <Error />,
+      },
+      { path: "/3dView", element: <Scene />, errorElement: <Error /> },
     ],
   },
 ]);

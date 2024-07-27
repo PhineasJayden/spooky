@@ -1,23 +1,20 @@
-import { useParams } from "react-router-dom";
 import { chapters } from "./chapters.js";
-import { images } from "../Gallery/images.js";
 
-import Image from "../Gallery/Image.jsx";
+import AudioItem from "./AudioItem.jsx";
 
 function Audiobook() {
-  const { audioId } = useParams();
-
-  const currentChapter = chapters.findIndex(
-    (chapter) => chapter.id === audioId
-  );
-
-  const currentImage = images.findIndex((image) => image.id === audioId);
-
   return (
     <div>
-      <Image img={images[currentImage].source} />
-      <p>{chapters[currentChapter].title}</p>
-      <audio src={chapters[currentChapter].src} controls />
+      <p>full audiobook</p>
+      {chapters.map((chapter) => {
+        return (
+          <AudioItem
+            source={chapter.src}
+            title={chapter.title}
+            key={chapter.id}
+          />
+        );
+      })}
     </div>
   );
 }
