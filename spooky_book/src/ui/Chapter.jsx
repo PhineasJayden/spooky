@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { chapters } from "../Features/Audiobook/chapters.js";
-import { images } from "../Features/Gallery/images.js";
 
-import Image from "../Features/Gallery/Image.jsx";
 import AudioItem from "../Features/Audiobook/AudioItem.jsx";
+import GalleryItem from "../Features/Gallery/GalleryItem.jsx";
+import SubHeader from "./SubHeader.jsx";
 
 function Chapter() {
   const { chapterId } = useParams();
@@ -12,16 +12,13 @@ function Chapter() {
     (chapter) => chapter.id === chapterId
   );
 
-  const currentImage = images.findIndex((image) => image.id === chapterId);
-
-  console.log(currentImage);
+  const { title, img, id, alt, src, chapter } = chapters[currentChapter];
 
   return (
-    <div>
-      <Image img={images[currentImage].source} />
-      <p>{chapters[currentChapter].title}</p>
-      <AudioItem source={chapters[currentChapter].src} />
-    </div>
+    <>
+      <GalleryItem img={img} title={title} id={id} alt={alt} />
+      <AudioItem source={src} id={chapter} title={title} />
+    </>
   );
 }
 

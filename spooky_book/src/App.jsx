@@ -5,7 +5,10 @@ import AppLayout from "./ui/AppLayout.jsx";
 import Audiobook from "./Features/Audiobook/Audiobook.jsx";
 import Gallery from "./Features/Gallery/Gallery.jsx";
 import Chapter from "./ui/Chapter.jsx";
-import Scene from "./Features/3D/Scene.jsx";
+import GlobalStyles from "./styles/GlobalStyles.js";
+import Image from "./Features/Gallery/Image.jsx";
+import Footer from "./ui/Footer.jsx";
+import Header from "./ui/Header.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +22,13 @@ const router = createBrowserRouter([
         errorElement: <Error />,
       },
       {
-        path: "/gallery/:imgId",
+        path: "/gallery",
         element: <Gallery />,
+        errorElement: <Error />,
+      },
+      {
+        path: "/gallery/:imgId",
+        element: <Image />,
         errorElement: <Error />,
       },
       {
@@ -28,13 +36,18 @@ const router = createBrowserRouter([
         element: <Audiobook />,
         errorElement: <Error />,
       },
-      { path: "/3dView", element: <Scene />, errorElement: <Error /> },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <GlobalStyles />
+
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;

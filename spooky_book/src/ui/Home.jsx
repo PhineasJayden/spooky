@@ -1,11 +1,18 @@
-import LinkButton from "./LinkButton.jsx";
+import { useNavigate } from "react-router-dom";
+
+import Button from "./Button.jsx";
+import SubHeader from "./SubHeader.jsx";
+import Container from "./Container.jsx";
 
 function Home() {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <LinkButton to={"/audiobook"}>Go to Audiobook</LinkButton>
-      <LinkButton to={"/chapter/spkliao"}>Go to Chapter 1</LinkButton>
-    </div>
+    <Container>
+      <Button onClick={() => navigate("/audiobook")}>Hörbuch</Button>
+      <Button onClick={() => navigate("/gallery")}>Illustrationen</Button>
+      <div></div>
+    </Container>
   );
 }
 
