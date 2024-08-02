@@ -18,7 +18,8 @@
     "react-icons": "^5.2.1",
     "react-list-player": "^1.0.6",
     "styled-components": "^6.1.12",
-    "three": "^0.167.0"
+    "three": "^0.167.0",
+    "use-sound": "^4.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

@@ -9,6 +9,7 @@ import GlobalStyles from "./styles/GlobalStyles.js";
 import Image from "./Features/Gallery/Image.jsx";
 import Footer from "./ui/Footer.jsx";
 import Header from "./ui/Header.jsx";
+import AudiobookMain from "./Features/Audiobook/AudiobookMain.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
       {
         path: "/audiobook",
         element: <Audiobook />,
+        errorElement: <Error />,
+      },
+      {
+        path: "/audiobook/:chapterId",
+        element: <AudiobookMain />,
         errorElement: <Error />,
       },
     ],
