@@ -15,6 +15,7 @@ import {
   GrVolumeMute,
 } from "react-icons/gr";
 import useSound from "use-sound";
+import { formatTime } from "../../utils/helpers.js";
 
 const Img = styled.img`
   width: 250px;
@@ -44,8 +45,9 @@ function AudiobookMain() {
   );
 
   const [curChapter, setcurChapter] = useState(chapters[chapterIndex]);
+  const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currTime, setCurrTime] = useState({
+  const [curTime, setCurTime] = useState({
     min: "",
     sec: "",
   });
@@ -54,47 +56,61 @@ function AudiobookMain() {
   const { imgPreview, id, src, chapter, title, alt } = curChapter;
   const curAudio = curChapter.src;
 
-  const [play, { pause, duration, sound }] = useSound(curAudio);
+  const audio = document.querySelector("audio");
 
-  const sec = duration / 1000;
-  const min = Math.floor(sec / 60);
-  const secRemain = Math.floor(sec % 60);
-  const time = {
-    min: min,
-    sec: secRemain,
-  };
+  const [play, { duration, sound }] = useSound(curAudio);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (sound) {
-        setSeconds(sound.seek([])); // setting the seconds state with the current state
-        const min = Math.floor(sound.seek([]) / 60);
-        const sec = Math.floor(sound.seek([]) % 60);
-        setCurrTime({
+    if (isPlaying) {
+      const interval = setInterval(() => {
+        console.log("interval started");
+        setSeconds(audio.currentTime); // setting the seconds state with the current state
+        const min = Math.floor(audio.currentTime / 60);
+        const sec = Math.floor(audio.currentTime % 60);
+        setCurTime({
           min,
           sec,
         });
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [sound]);
+        if (!isPlaying) {
+          clearInterval(interval);
+        }
+      }, 500);
+    } else return;
+  }, [isPlaying, audio]);
 
   function skipForward() {
     sound.currentTime;
   }
 
   function handlePlay() {
-    if (isPlaying) {
-      pause();
-      setIsPlaying(false);
-    } else {
-      play();
+    if (!isPlaying) {
+      audio.play();
       setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
     }
+  }
+
+  function handleInputChange(e) {
+    audio.currentTime = e.target.value;
+  }
+
+  function handleNext() {
+    console.log("ended");
+    clearInterval();
   }
 
   return (
     <>
+      <audio
+        src={curAudio}
+        preload="metadata"
+        onEnded={handleNext}
+        onCanPlay={(e) => {
+          setIsReady(true);
+        }}
+      />
       <Img src={imgPreview} alt={alt} />
       <div style={{ marginBottom: "20px" }}>
         <AudioInfo>
@@ -116,7 +132,7 @@ function AudiobookMain() {
           default="0"
           value={seconds}
           onChange={(e) => {
-            sound.seek([e.target.value]);
+            handleInputChange([e.target.value]);
           }}
           style={{ width: "300px" }}
         />
@@ -128,15 +144,11 @@ function AudiobookMain() {
           }}
         >
           <p>
-            {currTime.min < 10 ? 0 : null}
-            {currTime.min}:{currTime.sec < 10 ? 0 : null}
-            {currTime.sec}
+            {curTime.min < 10 ? 0 : null}
+            {curTime.min}:{curTime.sec < 10 ? 0 : null}
+            {curTime.sec}
           </p>
-          <p>
-            {time.min < 10 ? 0 : null}
-            {time.min}:{time.sec < 10 ? 0 : null}
-            {time.sec}
-          </p>
+          <p>{formatTime(duration)}</p>
         </div>
       </div>
       <Controls>
