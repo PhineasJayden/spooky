@@ -1,4 +1,5 @@
 import test from "../../assets/audio/test.mp3";
+import SPD1K01 from "../../assets/audio/SPD1K01.m4a";
 import furcht from "../../assets/images/furcht_sketch.jpg";
 
 export const chapters = [
@@ -6,7 +7,7 @@ export const chapters = [
     id: "spk363636",
     chapter: 1,
     title: "chapter 1",
-    src: test,
+    src: SPD1K01,
     img: furcht,
     imgPreview: furcht,
     alt: "furcht",

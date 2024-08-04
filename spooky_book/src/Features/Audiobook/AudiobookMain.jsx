@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { chapters } from "./chapters.js";
-import { useEffect, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   GrVolume,
@@ -15,6 +15,7 @@ import {
   GrVolumeMute,
 } from "react-icons/gr";
 import useSound from "use-sound";
+import { formatTime } from "../../utils/helpers.js";
 
 const Img = styled.img`
   width: 250px;
@@ -38,63 +39,77 @@ const Controls = styled.div`
 `;
 
 function AudiobookMain() {
+  const navigate = useNavigate();
   const { chapterId } = useParams();
   const chapterIndex = chapters.findIndex(
     (chapter) => chapter.id === chapterId
   );
-
   const [curChapter, setcurChapter] = useState(chapters[chapterIndex]);
+  const [isReady, setIsReady] = useState(false);
+
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currTime, setCurrTime] = useState({
-    min: "",
-    sec: "",
-  });
+
+  const [curTime, setCurTime] = useState("00:00");
+
+  const [duration, setDuration] = useState(0);
+
   const [seconds, setSeconds] = useState();
 
   const { imgPreview, id, src, chapter, title, alt } = curChapter;
-  const curAudio = curChapter.src;
 
-  const [play, { pause, duration, sound }] = useSound(curAudio);
+  const [audio, setAudio] = useState();
 
-  const sec = duration / 1000;
-  const min = Math.floor(sec / 60);
-  const secRemain = Math.floor(sec % 60);
-  const time = {
-    min: min,
-    sec: secRemain,
-  };
+  const audioRef = useRef(null);
 
   useEffect(() => {
+    console.log("effekt");
     const interval = setInterval(() => {
-      if (sound) {
-        setSeconds(sound.seek([])); // setting the seconds state with the current state
-        const min = Math.floor(sound.seek([]) / 60);
-        const sec = Math.floor(sound.seek([]) % 60);
-        setCurrTime({
-          min,
-          sec,
-        });
+      if (audio) {
+        setSeconds(audio.currentTime);
+        const newTime = formatTime(audio.currentTime);
+
+        setCurTime(newTime);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [sound]);
+  }, [audio]);
 
-  function skipForward() {
-    sound.currentTime;
+  function skipForward() {}
+
+  function handlePause() {
+    audio.pause();
+    setIsPlaying(false);
   }
 
   function handlePlay() {
-    if (isPlaying) {
-      pause();
-      setIsPlaying(false);
-    } else {
-      play();
-      setIsPlaying(true);
-    }
+    audio.play();
+    setIsPlaying(true);
+  }
+
+  function handlePrevious() {
+    navigate(`/audiobook/${chapters[`${chapterIndex - 1}`].id}`);
+    setcurChapter(chapters[chapterIndex - 1]);
+  }
+
+  function handleNext() {
+    navigate(`/audiobook/${chapters[`${chapterIndex + 1}`].id}`);
+    setcurChapter(chapters[chapterIndex + 1]);
   }
 
   return (
     <>
+      <audio
+        autoPlay
+        src={src}
+        preload="metadata"
+        id={id}
+        onEnded={handleNext}
+        ref={audioRef}
+        onDurationChange={(e) => setDuration(e.currentTarget.duration)}
+        onCanPlay={() => {
+          setIsReady(true), setAudio(audioRef.current);
+        }}
+      />
       <Img src={imgPreview} alt={alt} />
       <div style={{ marginBottom: "20px" }}>
         <AudioInfo>
@@ -112,11 +127,11 @@ function AudiobookMain() {
         <input
           type="range"
           min="0"
-          max={duration / 1000}
+          max={duration}
           default="0"
           value={seconds}
           onChange={(e) => {
-            sound.seek([e.target.value]);
+            audio.currentTime = e.target.value;
           }}
           style={{ width: "300px" }}
         />
@@ -127,24 +142,26 @@ function AudiobookMain() {
             justifyContent: "space-between",
           }}
         >
-          <p>
-            {currTime.min < 10 ? 0 : null}
-            {currTime.min}:{currTime.sec < 10 ? 0 : null}
-            {currTime.sec}
-          </p>
-          <p>
-            {time.min < 10 ? 0 : null}
-            {time.min}:{time.sec < 10 ? 0 : null}
-            {time.sec}
-          </p>
+          <p>{curTime}</p>
+          <p>{formatTime(duration)}</p>
         </div>
       </div>
       <Controls>
-        <GrChapterPrevious />
+        {!chapterIndex === 0 ? (
+          <GrChapterPrevious />
+        ) : (
+          <GrChapterPrevious onClick={handlePrevious} />
+        )}
         <GrRotateLeft />
-        <GrPlay onClick={handlePlay} />
+        {!isPlaying ? (
+          <GrPlay onClick={handlePlay} />
+        ) : (
+          <GrPlayFill onClick={handlePause} />
+        )}
         <GrRotateRight />
-        <GrChapterNext />
+        {!chapterIndex !== chapters.length - 1 && (
+          <GrChapterNext onClick={handleNext} />
+        )}
       </Controls>
     </>
   );
