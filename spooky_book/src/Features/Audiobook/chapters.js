@@ -1,5 +1,7 @@
 import test from "../../assets/audio/test.mp3";
 import SPD1K01 from "../../assets/audio/SPD1K01.m4a";
+import SPD1K02 from "../../assets/audio/SPD1K02.m4a";
+import SPD1K03 from "../../assets/audio/SPD1K03.m4a";
 import furcht from "../../assets/images/furcht_sketch.jpg";
 
 export const chapters = [
@@ -16,7 +18,7 @@ export const chapters = [
     id: "spkBF3030",
     chapter: 2,
     title: "chapter 2",
-    src: test,
+    src: SPD1K02,
     img: furcht,
     imgPreview: furcht,
     alt: "furcht",
@@ -25,7 +27,7 @@ export const chapters = [
     id: "spkD10A0A",
     chapter: 3,
     title: "chapter 3",
-    src: test,
+    src: SPD1K03,
     img: furcht,
     imgPreview: furcht,
     alt: "furcht",

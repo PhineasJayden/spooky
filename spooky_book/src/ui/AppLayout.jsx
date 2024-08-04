@@ -13,7 +13,7 @@ const StyledAppLayout = styled.div`
 `;
 
 const Main = styled.main`
-  background-color: #c2f8cb;
+  background-color: #362645;
   display: flex;
   flex-direction: column;
   overflow: scroll;

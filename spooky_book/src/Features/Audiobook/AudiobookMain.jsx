@@ -1,21 +1,25 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 import { chapters } from "./chapters.js";
-import { createElement, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { HiVolumeUp, HiVolumeOff } from "react-icons/hi";
 import {
-  GrVolume,
-  GrChapterNext,
-  GrChapterPrevious,
-  GrMenu,
-  GrPlay,
-  GrPlayFill,
-  GrRotateRight,
-  GrRotateLeft,
-  GrUnorderedList,
-  GrVolumeMute,
-} from "react-icons/gr";
-import useSound from "use-sound";
+  TbPlayerSkipForwardFilled,
+  TbPlayerSkipBackFilled,
+  TbPlayerSkipBack,
+  TbPlayerPlayFilled,
+  TbPlayerSkipForward,
+  TbPlayerPauseFilled,
+  TbPlus,
+  TbPlaylist,
+  TbRewindBackward10,
+  TbRewindForward10,
+} from "react-icons/tb";
+import { GrVolume, GrUnorderedList } from "react-icons/gr";
+
 import { formatTime } from "../../utils/helpers.js";
+import { IconContext } from "react-icons/lib";
+import { Popover } from "react-tiny-popover";
 
 const Img = styled.img`
   width: 250px;
@@ -38,13 +42,16 @@ const Controls = styled.div`
   margin: 20px;
 `;
 
+const VolumeSlider = styled.input`
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 16px;
+  vertical-align: bottom;
+  z-index: 5;
+`;
+
 function AudiobookMain() {
-  const navigate = useNavigate();
-  const { chapterId } = useParams();
-  const chapterIndex = chapters.findIndex(
-    (chapter) => chapter.id === chapterId
-  );
-  const [curChapter, setcurChapter] = useState(chapters[chapterIndex]);
+  const [curChapter, setcurChapter] = useState(0);
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -52,17 +59,19 @@ function AudiobookMain() {
   const [curTime, setCurTime] = useState("00:00");
 
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.5);
 
   const [seconds, setSeconds] = useState();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const { imgPreview, id, src, chapter, title, alt } = curChapter;
+  const { imgPreview, id, src, chapter, title, alt } =
+    chapters[Number(curChapter)];
 
   const [audio, setAudio] = useState();
 
   const audioRef = useRef(null);
 
   useEffect(() => {
-    console.log("effekt");
     const interval = setInterval(() => {
       if (audio) {
         setSeconds(audio.currentTime);
@@ -74,95 +83,150 @@ function AudiobookMain() {
     return () => clearInterval(interval);
   }, [audio]);
 
-  function skipForward() {}
+  /* useEffect(() => {
+    if (isReady) {
+      console.log("isReady");
+      console.log(audioRef.current);
+      audioRef.current.play();
+    }
+  }, [isReady, audio]);*/
+
+  function skipForward() {
+    audioRef.current.currentTime = audioRef.current.currentTime + 10;
+  }
+  function skipBack() {
+    audioRef.current.currentTime = audioRef.current.currentTime - 10;
+  }
+
+  function togglePopover() {
+    if (!isPopoverOpen) {
+      setIsPopoverOpen(true);
+    } else {
+      setIsPopoverOpen(false);
+    }
+  }
 
   function handlePause() {
-    audio.pause();
+    audioRef.current?.pause();
     setIsPlaying(false);
   }
 
   function handlePlay() {
-    audio.play();
+    audioRef.current?.play();
     setIsPlaying(true);
   }
 
   function handlePrevious() {
-    navigate(`/audiobook/${chapters[`${chapterIndex - 1}`].id}`);
-    setcurChapter(chapters[chapterIndex - 1]);
+    const newChapter = curChapter - 1;
+    setcurChapter(newChapter);
   }
 
   function handleNext() {
-    navigate(`/audiobook/${chapters[`${chapterIndex + 1}`].id}`);
-    setcurChapter(chapters[chapterIndex + 1]);
+    const newChapter = curChapter + 1;
+    setcurChapter(newChapter);
+  }
+
+  function handleVolumeChange(vol) {
+    if (!audioRef.current) return;
+    audioRef.current.volume = vol;
+    setVolume(vol);
   }
 
   return (
     <>
-      <audio
-        autoPlay
-        src={src}
-        preload="metadata"
-        id={id}
-        onEnded={handleNext}
-        ref={audioRef}
-        onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-        onCanPlay={() => {
-          setIsReady(true), setAudio(audioRef.current);
-        }}
-      />
-      <Img src={imgPreview} alt={alt} />
-      <div style={{ marginBottom: "20px" }}>
-        <AudioInfo>
-          <h4>{title}</h4>
-          <GrVolume />
-        </AudioInfo>
-        <AudioInfo style={{ justifyContent: "flex-start" }}>
-          <GrUnorderedList />
-          <p style={{ marginLeft: `10px`, fontSize: "16px" }}>
-            Kapitel {chapter}
-          </p>
-        </AudioInfo>
-      </div>
-      <div>
-        <input
-          type="range"
-          min="0"
-          max={duration}
-          default="0"
-          value={seconds}
-          onChange={(e) => {
-            audio.currentTime = e.target.value;
+      <IconContext.Provider value={{ style: { color: "white" } }}>
+        <audio
+          src={src}
+          preload="metadata"
+          id={id}
+          onEnded={handleNext}
+          ref={audioRef}
+          onDurationChange={(e) => setDuration(e.currentTarget.duration)}
+          onCanPlay={() => {
+            setIsReady(true), setAudio(audioRef.current);
           }}
-          style={{ width: "300px" }}
+          onPlaying={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
         />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <p>{curTime}</p>
-          <p>{formatTime(duration)}</p>
+        <Img src={imgPreview} alt={alt} />
+        <div style={{ marginBottom: "20px" }}>
+          <AudioInfo>
+            <h4>{title}</h4>
+            <Popover
+              isOpen={isPopoverOpen}
+              positions={["right"]}
+              content={
+                <VolumeSlider
+                  type="range"
+                  aria-label="volume"
+                  name="volume"
+                  min={0}
+                  step={0.05}
+                  max={1}
+                  value={volume}
+                  onChange={(e) =>
+                    handleVolumeChange(e.currentTarget.valueAsNumber)
+                  }
+                />
+              }
+              onClickOutside={() => setIsPopoverOpen(false)}
+            >
+              <div onClick={togglePopover}>
+                {volume === 0 ? <HiVolumeOff /> : <HiVolumeUp />}
+              </div>
+            </Popover>
+          </AudioInfo>
+          <AudioInfo style={{ justifyContent: "flex-start" }}>
+            <GrUnorderedList />
+            <p style={{ marginLeft: `10px`, fontSize: "16px" }}>
+              Kapitel {chapter}
+            </p>
+          </AudioInfo>
         </div>
-      </div>
-      <Controls>
-        {!chapterIndex === 0 ? (
-          <GrChapterPrevious />
-        ) : (
-          <GrChapterPrevious onClick={handlePrevious} />
-        )}
-        <GrRotateLeft />
-        {!isPlaying ? (
-          <GrPlay onClick={handlePlay} />
-        ) : (
-          <GrPlayFill onClick={handlePause} />
-        )}
-        <GrRotateRight />
-        {!chapterIndex !== chapters.length - 1 && (
-          <GrChapterNext onClick={handleNext} />
-        )}
-      </Controls>
+        <div>
+          <input
+            type="range"
+            min="0"
+            max={duration}
+            default="0"
+            value={seconds}
+            onChange={(e) => {
+              audio.currentTime = e.target.value;
+            }}
+            style={{ width: "300px" }}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <p>{curTime}</p>
+            <p>{formatTime(duration)}</p>
+          </div>
+        </div>
+        <Controls>
+          {!curChapter === 0 ? (
+            <TbPlayerSkipBack />
+          ) : (
+            <TbPlayerSkipBackFilled onClick={handlePrevious} />
+          )}
+          <TbRewindBackward10 onClick={skipBack} />
+          {!isReady && chapter}
+          {!isPlaying ? (
+            <TbPlayerPlayFilled onClick={handlePlay} disabled={!isReady} />
+          ) : (
+            <TbPlayerPauseFilled onClick={handlePause} />
+          )}
+          <TbRewindForward10 onClick={skipForward} />
+          {!curChapter !== chapters.length - 1 ? (
+            <TbPlayerSkipForwardFilled onClick={handleNext} />
+          ) : (
+            <TbPlayerSkipForward />
+          )}
+        </Controls>
+      </IconContext.Provider>
     </>
   );
 }

@@ -19,10 +19,21 @@ const GlobalStyles = createGlobalStyle`
   margin: 0;
 }
 h1 {
-  text-align: center
+  text-align: center;
+  color: white
 }
 h2 {
-  text-align: center
+  text-align: center;
+  color: white;
+}
+h3 {
+  color: white;
+}
+h4 {
+  color: white;
+}
+p {
+  color: white;
 }
 body {
   color: black;
