@@ -1,4 +1,3 @@
-import { redirect, useNavigate, useParams } from "react-router-dom";
 import { chapters } from "./chapters.js";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -15,11 +14,12 @@ import {
   TbRewindBackward10,
   TbRewindForward10,
 } from "react-icons/tb";
-import { GrVolume, GrUnorderedList } from "react-icons/gr";
+import { GrUnorderedList } from "react-icons/gr";
 
 import { formatTime } from "../../utils/helpers.js";
 import { IconContext } from "react-icons/lib";
 import { Popover } from "react-tiny-popover";
+import VolumeInput from "../../ui/VolumeInput.jsx";
 
 const Img = styled.img`
   width: 250px;
@@ -42,16 +42,7 @@ const Controls = styled.div`
   margin: 20px;
 `;
 
-const VolumeSlider = styled.input`
-  writing-mode: vertical-lr;
-  direction: rtl;
-  width: 16px;
-  vertical-align: bottom;
-  z-index: 5;
-`;
-
-function AudiobookMain() {
-  const [curChapter, setcurChapter] = useState(0);
+function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -83,13 +74,17 @@ function AudiobookMain() {
     return () => clearInterval(interval);
   }, [audio]);
 
-  /* useEffect(() => {
-    if (isReady) {
-      console.log("isReady");
-      console.log(audioRef.current);
-      audioRef.current.play();
-    }
-  }, [isReady, audio]);*/
+  useEffect(() => {
+    audioRef.current?.pause();
+
+    const timeout = setTimeout(() => {
+      audioRef.current?.play();
+    }, 500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [curChapter]);
 
   function skipForward() {
     audioRef.current.currentTime = audioRef.current.currentTime + 10;
@@ -156,17 +151,9 @@ function AudiobookMain() {
               isOpen={isPopoverOpen}
               positions={["right"]}
               content={
-                <VolumeSlider
-                  type="range"
-                  aria-label="volume"
-                  name="volume"
-                  min={0}
-                  step={0.05}
-                  max={1}
-                  value={volume}
-                  onChange={(e) =>
-                    handleVolumeChange(e.currentTarget.valueAsNumber)
-                  }
+                <VolumeInput
+                  volume={volume}
+                  handleVolumeChange={handleVolumeChange}
                 />
               }
               onClickOutside={() => setIsPopoverOpen(false)}
@@ -177,7 +164,7 @@ function AudiobookMain() {
             </Popover>
           </AudioInfo>
           <AudioInfo style={{ justifyContent: "flex-start" }}>
-            <GrUnorderedList />
+            <GrUnorderedList onClick={() => setShowPlaylist(true)} />
             <p style={{ marginLeft: `10px`, fontSize: "16px" }}>
               Kapitel {chapter}
             </p>
@@ -194,6 +181,7 @@ function AudiobookMain() {
               audio.currentTime = e.target.value;
             }}
             style={{ width: "300px" }}
+            id="range"
           />
           <div
             style={{
@@ -208,22 +196,38 @@ function AudiobookMain() {
         </div>
         <Controls>
           {!curChapter === 0 ? (
-            <TbPlayerSkipBack />
+            <TbPlayerSkipBack aria-label="go to previous" />
           ) : (
-            <TbPlayerSkipBackFilled onClick={handlePrevious} />
+            <TbPlayerSkipBackFilled
+              onClick={handlePrevious}
+              aria-label="go to previous"
+            />
           )}
-          <TbRewindBackward10 onClick={skipBack} />
+          <TbRewindBackward10
+            onClick={skipBack}
+            aria-label="rewind 10 seconds"
+          />
           {!isReady && chapter}
           {!isPlaying ? (
-            <TbPlayerPlayFilled onClick={handlePlay} disabled={!isReady} />
+            <TbPlayerPlayFilled
+              onClick={handlePlay}
+              disabled={!isReady}
+              aria-label="play"
+            />
           ) : (
-            <TbPlayerPauseFilled onClick={handlePause} />
+            <TbPlayerPauseFilled onClick={handlePause} aria-label="pause" />
           )}
-          <TbRewindForward10 onClick={skipForward} />
+          <TbRewindForward10
+            onClick={skipForward}
+            aria-label="skip forward 10 seconds"
+          />
           {!curChapter !== chapters.length - 1 ? (
-            <TbPlayerSkipForwardFilled onClick={handleNext} />
+            <TbPlayerSkipForwardFilled
+              onClick={handleNext}
+              aria-label="go to next"
+            />
           ) : (
-            <TbPlayerSkipForward />
+            <TbPlayerSkipForward aria-label="go to next" />
           )}
         </Controls>
       </IconContext.Provider>
@@ -231,4 +235,4 @@ function AudiobookMain() {
   );
 }
 
-export default AudiobookMain;
+export default AudioPlayer;
