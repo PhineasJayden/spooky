@@ -38,7 +38,6 @@ function AppLayout() {
 
   return (
     <StyledAppLayout>
-      <BackButton onClick={() => navigate(-1)}>{`<`}</BackButton>
       <Header />
       {isLoading && <Loader />}
       <Main>

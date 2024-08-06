@@ -3,6 +3,8 @@ import SubHeader from "../../ui/SubHeader.jsx";
 import furcht from "../../assets/images/furcht_sketch.jpg";
 import GalleryItem from "./GalleryItem.jsx";
 import { chapters } from "../Audiobook/chapters.js";
+import ButtonBack from "../../ui/ButtonBack.jsx";
+import { useNavigate } from "react-router-dom";
 
 const GalleryContainer = styled.div`
   display: grid;
@@ -12,8 +14,10 @@ const GalleryContainer = styled.div`
 `;
 
 function Gallery() {
+  const navigate = useNavigate();
   return (
     <GalleryContainer>
+      <ButtonBack handleBack={() => navigate("/")} />
       {chapters.map((chapter) => (
         <GalleryItem
           img={chapter.img}

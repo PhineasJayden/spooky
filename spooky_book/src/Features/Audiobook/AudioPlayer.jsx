@@ -42,7 +42,20 @@ const Controls = styled.div`
   margin: 20px;
 `;
 
-function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
+const VolumeSlider = styled.input`
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 16px;
+  vertical-align: bottom;
+  z-index: 5;
+`;
+
+function AudioPlayer({
+  curChapter,
+  setcurChapter,
+  setShowPlaylist,
+  isSingleChapter,
+}) {
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -75,6 +88,7 @@ function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
   }, [audio]);
 
   useEffect(() => {
+    if (isSingleChapter) return;
     audioRef.current?.pause();
 
     const timeout = setTimeout(() => {
@@ -84,13 +98,13 @@ function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
     return () => {
       clearTimeout(timeout);
     };
-  }, [curChapter]);
+  }, [curChapter, isSingleChapter]);
 
   function skipForward() {
-    audioRef.current.currentTime = audioRef.current.currentTime + 10;
+    audio.currentTime = audio.currentTime + 10;
   }
   function skipBack() {
-    audioRef.current.currentTime = audioRef.current.currentTime - 10;
+    audio.currentTime = audio.currentTime - 10;
   }
 
   function togglePopover() {
@@ -102,12 +116,12 @@ function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
   }
 
   function handlePause() {
-    audioRef.current?.pause();
+    audio.pause();
     setIsPlaying(false);
   }
 
   function handlePlay() {
-    audioRef.current?.play();
+    audio.play();
     setIsPlaying(true);
   }
 
@@ -164,7 +178,9 @@ function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
             </Popover>
           </AudioInfo>
           <AudioInfo style={{ justifyContent: "flex-start" }}>
-            <GrUnorderedList onClick={() => setShowPlaylist(true)} />
+            {!isSingleChapter && (
+              <GrUnorderedList onClick={() => setShowPlaylist(true)} />
+            )}
             <p style={{ marginLeft: `10px`, fontSize: "16px" }}>
               Kapitel {chapter}
             </p>
@@ -195,8 +211,8 @@ function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
           </div>
         </div>
         <Controls>
-          {!curChapter === 0 ? (
-            <TbPlayerSkipBack aria-label="go to previous" />
+          {curChapter === 0 || isSingleChapter ? (
+            <TbPlayerSkipBack aria-label="go to previous" disabled={true} />
           ) : (
             <TbPlayerSkipBackFilled
               onClick={handlePrevious}
@@ -221,13 +237,13 @@ function AudioPlayer({ curChapter, setcurChapter, setShowPlaylist }) {
             onClick={skipForward}
             aria-label="skip forward 10 seconds"
           />
-          {!curChapter !== chapters.length - 1 ? (
+          {!isSingleChapter && curChapter !== chapters.length - 1 ? (
             <TbPlayerSkipForwardFilled
               onClick={handleNext}
               aria-label="go to next"
             />
           ) : (
-            <TbPlayerSkipForward aria-label="go to next" />
+            <TbPlayerSkipForward aria-label="go to next" disabled={true} />
           )}
         </Controls>
       </IconContext.Provider>

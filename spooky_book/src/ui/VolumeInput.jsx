@@ -8,7 +8,7 @@ const VolumeSlider = styled.input`
   z-index: 5;
 `;
 
-function VolumeInput(volume, handleVolumeChange) {
+function VolumeInput({ volume, handleVolumeChange }) {
   return (
     <VolumeSlider
       type="range"
