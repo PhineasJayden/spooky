@@ -30,7 +30,7 @@ const AudioInfo = styled.div`
   margin-right: 20px;
 `;
 
-function AudioItem({ title, id, setcurChapter, setShowPlaylist, img, src }) {
+function AudioItem({ title, id, setcurChapter, setShowPlaylist, img }) {
   function handleClick() {
     setcurChapter(id);
     setShowPlaylist(false);
