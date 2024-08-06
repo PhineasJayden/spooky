@@ -1,11 +1,9 @@
-
 import styled from "styled-components";
-
 
 const AudioContainer = styled.div`
   background-color: #de93e0;
-  margin: 5px;
   align-self: stretch;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,17 +11,21 @@ const AudioContainer = styled.div`
   border-radius: 10px;
   cursor: pointer;
   padding: 10px;
+  height: 20vh;
 `;
 
 const Img = styled.img`
-  width: 100px;
-  height: 100px;
+  flex: 1;
+  height: 80%;
+  width: auto;
   object-fit: cover;
   margin-right: 10px;
 `;
 
 const AudioInfo = styled.div`
+  flex: 2;
   display: flex;
+  justify-self: right;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;

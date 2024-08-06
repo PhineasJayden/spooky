@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 const StyledAppLayout = styled.div`
   display: grid;
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
   height: 100vh;
   overflow: hidden;
@@ -13,11 +14,15 @@ const StyledAppLayout = styled.div`
 
 const Main = styled.main`
   background-color: #362645;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  overflow-x: hidden;
   align-items: center;
+  justify-content: flex-start;
   text-align: center;
+  padding: 10px;
 `;
 
 function AppLayout() {

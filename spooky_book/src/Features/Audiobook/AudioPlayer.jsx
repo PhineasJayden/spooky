@@ -22,16 +22,25 @@ import { Popover } from "react-tiny-popover";
 import VolumeInput from "../../ui/VolumeInput.jsx";
 import Loader from "../../ui/Loader.jsx";
 
+const AudioPlayerContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Img = styled.img`
-  width: 250px;
-  height: 250px;
+  width: 80%;
+  height: auto;
   object-fit: cover;
   margin-top: 20px;
+  margin-bottom: 20px;
 `;
 const AudioInfo = styled.div`
   display: flex;
-  width: 250px;
-  align-items: center;
+  width: 300px;
+  flex-direction: row;
   justify-content: space-between;
 `;
 
@@ -136,7 +145,7 @@ function AudioPlayer({
   }
 
   return (
-    <>
+    <AudioPlayerContainer>
       <IconContext.Provider value={{ style: { color: "white" } }}>
         <audio
           src={src}
@@ -152,34 +161,34 @@ function AudioPlayer({
           onPause={() => setIsPlaying(false)}
         />
         <Img src={imgPreview} alt={alt} />
-        <div style={{ marginBottom: "20px" }}>
-          <AudioInfo>
-            <h4>{title}</h4>
-            <Popover
-              isOpen={isPopoverOpen}
-              positions={["right"]}
-              content={
-                <VolumeInput
-                  volume={volume}
-                  handleVolumeChange={handleVolumeChange}
-                />
-              }
-              onClickOutside={() => setIsPopoverOpen(false)}
-            >
-              <div onClick={togglePopover}>
-                {volume === 0 ? <HiVolumeOff /> : <HiVolumeUp />}
-              </div>
-            </Popover>
-          </AudioInfo>
-          <AudioInfo style={{ justifyContent: "flex-start" }}>
-            {!isSingleChapter && (
-              <GrUnorderedList onClick={() => setShowPlaylist(true)} />
-            )}
-            <p style={{ marginLeft: `10px`, fontSize: "16px" }}>
-              Kapitel {chapter}
-            </p>
-          </AudioInfo>
-        </div>
+
+        <AudioInfo>
+          <h4>{title}</h4>
+          <Popover
+            isOpen={isPopoverOpen}
+            positions={["right"]}
+            content={
+              <VolumeInput
+                volume={volume}
+                handleVolumeChange={handleVolumeChange}
+              />
+            }
+            onClickOutside={() => setIsPopoverOpen(false)}
+          >
+            <div onClick={togglePopover}>
+              {volume === 0 ? <HiVolumeOff /> : <HiVolumeUp />}
+            </div>
+          </Popover>
+        </AudioInfo>
+        <AudioInfo style={{ justifyContent: "flex-start" }}>
+          {!isSingleChapter && (
+            <GrUnorderedList onClick={() => setShowPlaylist(true)} />
+          )}
+          <p style={{ marginLeft: `10px`, fontSize: "16px" }}>
+            Kapitel {chapter}
+          </p>
+        </AudioInfo>
+
         <div>
           <input
             type="range"
@@ -241,7 +250,7 @@ function AudioPlayer({
           )}
         </Controls>
       </IconContext.Provider>
-    </>
+    </AudioPlayerContainer>
   );
 }
 

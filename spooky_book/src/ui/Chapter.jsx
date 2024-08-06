@@ -18,20 +18,26 @@ function Chapter() {
   const [showAudio, setShowAudio] = useState(false);
 
   return (
-    <>
+    <div
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
       {showAudio && <ButtonBack handleBack={() => setShowAudio(false)} />}
       {!showAudio ? (
-        <Container>
+        <>
           <Button onClick={() => setShowAudio(true)}>Audio</Button>
           <Button onClick={() => navigate(`/gallery/${chapterId}`)}>
             Illustration
           </Button>
-          <div></div>
-        </Container>
+        </>
       ) : (
         <AudioPlayer curChapter={currentChapter} isSingleChapter={true} />
       )}
-    </>
+    </div>
   );
 }
 
