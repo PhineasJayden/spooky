@@ -1,9 +1,6 @@
 import { chapters } from "./chapters.js";
-
 import AudioItem from "./AudioItem.jsx";
-import SubHeader from "../../ui/SubHeader.jsx";
 import Container from "../../ui/Container.jsx";
-import Button from "../../ui/Button.jsx";
 import { useState } from "react";
 import AudioPlayer from "./AudioPlayer.jsx";
 import ButtonBack from "../../ui/ButtonBack.jsx";

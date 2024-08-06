@@ -20,6 +20,7 @@ import { formatTime } from "../../utils/helpers.js";
 import { IconContext } from "react-icons/lib";
 import { Popover } from "react-tiny-popover";
 import VolumeInput from "../../ui/VolumeInput.jsx";
+import Loader from "../../ui/Loader.jsx";
 
 const Img = styled.img`
   width: 250px;
@@ -223,7 +224,7 @@ function AudioPlayer({
             onClick={skipBack}
             aria-label="rewind 10 seconds"
           />
-          {!isReady && chapter}
+          {!isReady && <Loader />}
           {!isPlaying ? (
             <TbPlayerPlayFilled
               onClick={handlePlay}
