@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import SubHeader from "../../ui/SubHeader.jsx";
-import furcht from "../../assets/images/furcht_sketch.jpg";
+
 import GalleryItem from "./GalleryItem.jsx";
 import { chapters } from "../Audiobook/chapters.js";
 import ButtonBack from "../../ui/ButtonBack.jsx";
