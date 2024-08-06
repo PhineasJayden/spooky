@@ -132,6 +132,7 @@ function AudioPlayer({
   }
 
   function handleNext() {
+    if (curChapter === chapters.length - 1) return;
     const newChapter = curChapter + 1;
     setcurChapter(newChapter);
   }
