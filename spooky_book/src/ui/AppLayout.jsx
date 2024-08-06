@@ -3,7 +3,6 @@ import Loader from "./Loader.jsx";
 import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
 import styled from "styled-components";
-import Button from "./Button.jsx";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -21,20 +20,9 @@ const Main = styled.main`
   text-align: center;
 `;
 
-const BackButton = styled.button`
-  position: absolute;
-  margin: 20px;
-  width: 20px;
-  height: 20px;
-  background-color: transparent;
-  border: none;
-  font-size: 30px;
-`;
-
 function AppLayout() {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
-  const navigate = useNavigate();
 
   return (
     <StyledAppLayout>
