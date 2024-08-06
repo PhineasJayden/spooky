@@ -18,6 +18,9 @@ const GlobalStyles = createGlobalStyle`
   padding: 0;
   margin: 0;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 
 #range {
   -webkit-appearance: none;
