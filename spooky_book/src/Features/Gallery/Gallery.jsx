@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const GalleryContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  padding: 10px;
+  grid-template-columns: auto auto;
   grid-gap: 10px;
   margin: 10px;
 `;
@@ -19,7 +20,7 @@ function Gallery() {
       <ButtonBack handleBack={() => navigate("/")} />
       {chapters.map((chapter) => (
         <GalleryItem
-          img={chapter.img}
+          img={chapter.imgPreview}
           title={chapter.title}
           key={chapter.id}
           alt={chapter.alt}

@@ -5,6 +5,7 @@ import { useState } from "react";
 import AudioPlayer from "./AudioPlayer.jsx";
 import ButtonBack from "../../ui/ButtonBack.jsx";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 function Audiobook() {
   const navigate = useNavigate();
@@ -23,21 +24,20 @@ function Audiobook() {
   return (
     <>
       <ButtonBack handleBack={handleBack} />
+
       {playlist ? (
-        <Container>
-          {chapters.map((chapter, index) => {
-            return (
-              <AudioItem
-                img={chapter.imgPreview}
-                title={chapter.title}
-                key={chapter.id}
-                id={index}
-                setcurChapter={setcurChapter}
-                setShowPlaylist={setShowPlaylist}
-              />
-            );
-          })}
-        </Container>
+        chapters.map((chapter, index) => {
+          return (
+            <AudioItem
+              img={chapter.imgPreview}
+              title={chapter.title}
+              key={chapter.id}
+              id={index}
+              setcurChapter={setcurChapter}
+              setShowPlaylist={setShowPlaylist}
+            />
+          );
+        })
       ) : (
         <AudioPlayer
           curChapter={curChapter}

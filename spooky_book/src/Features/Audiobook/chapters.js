@@ -4,6 +4,8 @@ import SPD1K02 from "../../assets/audio/SPD1K02.m4a";
 import SPD1K03 from "../../assets/audio/SPD1K03.m4a";
 import furcht from "../../assets/images/furcht_sketch.jpg";
 
+import prev from "../../assets/images/spk_prev.jpg";
+
 export const chapters = [
   {
     id: "spk363636",
@@ -11,7 +13,7 @@ export const chapters = [
     title: "chapter 1",
     src: SPD1K01,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -20,7 +22,7 @@ export const chapters = [
     title: "chapter 2",
     src: SPD1K02,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -29,7 +31,7 @@ export const chapters = [
     title: "chapter 3",
     src: SPD1K03,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -38,7 +40,7 @@ export const chapters = [
     title: "chapter 4",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -47,7 +49,7 @@ export const chapters = [
     title: "chapter 5",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -56,7 +58,7 @@ export const chapters = [
     title: "chapter 6",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -65,7 +67,7 @@ export const chapters = [
     title: "chapter 7",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -74,7 +76,7 @@ export const chapters = [
     title: "chapter 8",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -83,7 +85,7 @@ export const chapters = [
     title: "chapter 9",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -92,7 +94,7 @@ export const chapters = [
     title: "chapter 10",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -101,7 +103,7 @@ export const chapters = [
     title: "chapter 11",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -110,7 +112,7 @@ export const chapters = [
     title: "chapter 12",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -119,7 +121,7 @@ export const chapters = [
     title: "chapter 13",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -128,7 +130,7 @@ export const chapters = [
     title: "chapter 14",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -137,7 +139,7 @@ export const chapters = [
     title: "chapter 15",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -146,7 +148,7 @@ export const chapters = [
     title: "chapter 16",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
   {
@@ -155,7 +157,7 @@ export const chapters = [
     title: "chapter 17",
     src: test,
     img: furcht,
-    imgPreview: furcht,
+    imgPreview: prev,
     alt: "furcht",
   },
 ];

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledHeader = styled.header`
   background-color: #8367c7;
+  grid-row: 1;
 `;
 
 function Header() {

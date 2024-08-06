@@ -4,7 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ButtonBack from "../../ui/ButtonBack.jsx";
 
-const StyledImage = styled.img``;
+const StyledImage = styled.img`
+  height: 100%;
+`;
 
 function Image() {
   const { imgId } = useParams();

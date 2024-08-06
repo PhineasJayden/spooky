@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledGalleryItem = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 80%;
+  height: 80%;
   margin: 10px;
   object-fit: cover;
 `;
@@ -12,15 +12,15 @@ const ImgContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 190px;
-  height: 200px;
-  background-color: #f9f9f9;
+  justify-content: space-evenly;
+  width: 1fr;
+  height: 1fr;
+  background-color: #624362;
   text-align: center;
 `;
 
 const P = styled.p`
-  font-size: 16px;
-  color: #171717;
+  font-size: 2rem;
 `;
 
 function GalleryItem({ img, title, id }) {

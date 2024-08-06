@@ -18,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
   padding: 0;
   margin: 0;
 }
+
 #range {
   -webkit-appearance: none;
   appearance: none; 
@@ -64,23 +65,23 @@ const GlobalStyles = createGlobalStyle`
 
 h1 {
   text-align: center;
-  color: white
+ 
 }
 h2 {
   text-align: center;
-  color: white;
+
 }
 h3 {
-  color: white;
+ 
 }
 h4 {
-  color: white;
+  
 }
 p {
-  color: white;
+  
 }
 body {
-  color: black;
+  color: white;
   transition: color 0.3, background-color 0.3s;
   min-height: 100vh;
   line-height: 1.5;
