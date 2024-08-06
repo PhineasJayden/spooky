@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 import Button from "./Button.jsx";
-import SubHeader from "./SubHeader.jsx";
 import Container from "./Container.jsx";
 
 function Home() {

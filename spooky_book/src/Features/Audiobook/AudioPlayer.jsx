@@ -43,14 +43,6 @@ const Controls = styled.div`
   margin: 20px;
 `;
 
-const VolumeSlider = styled.input`
-  writing-mode: vertical-lr;
-  direction: rtl;
-  width: 16px;
-  vertical-align: bottom;
-  z-index: 5;
-`;
-
 function AudioPlayer({
   curChapter,
   setcurChapter,
